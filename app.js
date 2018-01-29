@@ -1,64 +1,95 @@
-//  BUDGET CONTROLLER
-var budgetController = (function() {
+(function () {
+    'use strict';
 
 
+    //  BUDGET CONTROLLER
+    var budgetController = (function () {
 
-})();
+        var Expense = function(id, description, value) {
+            this.id = id;
+            this.description = description;
+            this.value = value;
+        };
 
+        var Income = function(id, description, value) {
+            this.id = id;
+            this.description = description;
+            this.value = value;
+        };
 
-//UI CONTROLLER
-var UIController = (function() {
+        var allExpenses = [];
+        var allIncomes = [];
+        var totalExpenses = 0;
 
-    var DOMstrings = {
-        inputType: '.add__type',
-        inputDescription: '.add__description',
-        inputValue: '.add__value',
-        inputBtn: '.add__btn'
-    }
-
-    return {
-        getInput: function() {
-            return {
-                type: document.querySelector(DOMstrings.inputType).value, //inc or exp
-                description: document.querySelector(DOMstrings.inputDescription).value,
-                value: document.querySelector(DOMstrings.inputValue).value
-            }            
-        },
-
-        getDOMstrings: function() {
-            return DOMstrings;
-        }
-    };
-
-})();
+    })();
 
 
-//GLOBAL APP CONTROLLERs
-var controller = (function(budgetCtrl, UICtrl) {
+    //UI CONTROLLER
+    var UIController = (function () {
 
-    var DOM = UICtrl.getDOMstrings();
+        var DOMstrings = {
+            inputType: '.add__type',
+            inputDescription: '.add__description',
+            inputValue: '.add__value',
+            inputBtn: '.add__btn'
+        };
 
-    var ctrlAddItem = function() {
-         
+        return {
+            getInput: function () {
+                return {
+                    type: document.querySelector(DOMstrings.inputType).value, //inc or exp
+                    description: document.querySelector(DOMstrings.inputDescription).value,
+                    value: document.querySelector(DOMstrings.inputValue).value
+                };
+            },
+
+            getDOMstrings: function () {
+                return DOMstrings;
+            }
+        };
+
+    })();
+
+
+    //GLOBAL APP CONTROLLERS
+    var controller = (function (budgetCtrl, UICtrl) {
+
+        var setupEventListeners = function () {
+
+            var DOM = UICtrl.getDOMstrings();
+            document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem);
+
+            document.addEventListener('keypress', function (event) {
+                if (event.keyCode === 13 || event.which === 13) {
+                    ctrlAddItem();
+                }
+            });
+        };
+
+        var ctrlAddItem = function () {
+
             //1. get data from input
 
             var input = UICtrl.getInput();
             console.log(input);
-        /*
-            2. add item to budget controller
-            3. add the item to UI controller
-            4. calculate budget
-            5. display budget on UI
-         */
+            /*
+                2. add item to budget controller
+                3. add the item to UI controller
+                4. calculate budget
+                5. display budget on UI
+             */
 
-    }
+        };
 
-    document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem);
+        return {
+            init: function() {
+                console.log('init works!');
+                setupEventListeners();
+            }
+        };
 
-    document.addEventListener('keypress', function(event) {
-        if(event.keyCode === 13 || event.which === 13) {
-            ctrlAddItem();
-        }
-    })
+    })(budgetController, UIController);
 
-})(budgetController, UIController);
+    controller.init();
+
+})();
